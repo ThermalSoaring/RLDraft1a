@@ -7,21 +7,32 @@ close all
 % Provides wind energy as a function of (x,y)
 windField = createWindField();
 
-% Plots 2D contour plot
+% Plots 2D contour plot of wind energy
 % Second argument sets 3D if high. Last is mesh fineness for plotting.
-plotWindfield(windField,0,0.05);
+meFPlot = 0.05; 
+is3D = 0;
+plotWindfield(windField,is3D,meFPlot);
 
-hold on
+% Plot path of UAV
+if (is3D == 0)
+    hold on
 
-% Demonstrate how to set path points
-% manualDemoPath();
+    % Demonstrate greedy policy
+    % Value function is energy from wind field
+    % Demonstrate how to plot simulation
+    % Demonstrate how plane can move and make decisions autonomously
+    nSteps = 100;
+    startPos = [0 1];
+    stepSize = 0.1;
 
-% Demonstrate how to plot simulation
-% Demonstrate how plane can move and make decisions autonomously
- nSteps = 100;
- startPos = [1 0];
- travelUpEnergy(nSteps, windField,startPos);
+    % Describe how value function is discretized
+    % sideLength must be even (how far away airplane can see in mesh units / 2)
+    meFVFun = 0.05; sideLength = 8; % Ex
+    travelUpEnergy(nSteps, stepSize, windField,startPos, meFVFun, sideLength);
+    
+    title('Path of UAV in Windfield');
+    hold off
+end
 
-hold off
 end
 
