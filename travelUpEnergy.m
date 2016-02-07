@@ -1,5 +1,9 @@
-function [ ] = travelUpEnergy( nSteps, stepSize, windField, startPos, meFVFun, sideLength)
+function [ ] = travelUpEnergy( nSteps, stepSize, windField, startPos, gridParams)
 %travelUpEnergy The plane moves towards higher energy each step
+
+% Specify the mesh used for value generation
+meFVFun = gridParams(1) ;
+sideLength = gridParams(2);
 
 % Store the points our path goes through
 pathPoints = zeros(nSteps, 2);

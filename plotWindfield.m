@@ -4,7 +4,7 @@ function plotWindfield( windField, threeD, meF )
 %% Plotting parameters
 %meF = 0.005; % mesh fineness
 meL = -2; % mesh lower bound
-meU = 2; % mesh upper bound
+meU = 2.5; % mesh upper bound
 
 %% Creating plot
 [X , Y] = meshgrid(meL:meF:meU, meL:meF:meU);
