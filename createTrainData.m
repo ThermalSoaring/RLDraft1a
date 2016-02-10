@@ -1,4 +1,4 @@
-function [ output_args ] = createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections)
+function [ inputVals, targets ] = createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections)
 % Create training data for neural net
 % Given (x,y,z,windValue) tells best direction to go
     
@@ -15,10 +15,18 @@ function [ output_args ] = createTrainData(gridParams,windField,trainGrid,arrSiz
     xValsTrain = xBoundsTrain(1):trainDataFineness:xBoundsTrain(2);
     yValsTrain = yBoundsTrain(1):trainDataFineness:yBoundsTrain(2);
     
+    % Create a matrix of the input vales
+    % Each row contains an (x,y) pair  
+    inputVals=zeros(length(xValsTrain)*length(yValsTrain),2);
+    
+    % Create a vector of target values
+    targets = zeros(length(xValsTrain)*length(yValsTrain),1);
+    
     % Create training data at each of these specified points
-    trainData = zeros(length(xValsTrain), length(yValsTrain));
+    trainData = zeros(length(xValsTrain), length(yValsTrain));  
     
     % Keep track of where we are in the grid
+    whichInput = 1;
     whichX = 1;  
     for trainX =  xValsTrain
         whichY = 1;
@@ -49,7 +57,12 @@ function [ output_args ] = createTrainData(gridParams,windField,trainGrid,arrSiz
             bestArrow = refArrow(bestArrowIndex,:);           
             
             % Append just calculated arrow to training data
-            trainData(whichX, whichY) = bestArrowIndex;
+            trainData(whichX, whichY) = bestArrowIndex;            
+            
+            % Append input output pair to neural matrices
+            inputVals(whichInput,:) = [trainX, trainY];
+            targets(whichInput) = bestArrowIndex;
+            
             
             % Display current arrow in training data
             if (printToGraph == 1)
@@ -57,9 +70,10 @@ function [ output_args ] = createTrainData(gridParams,windField,trainGrid,arrSiz
             end
             
             whichY = whichY + 1;
+            whichInput = whichInput + 1;
         end
         whichX = whichX  + 1;
-    end
+    end    
     
     % Print in an orientation that is easy to match with the graph
     disp(flipud(trainData'))  

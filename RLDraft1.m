@@ -51,10 +51,18 @@ if (is3D == 0)
     
     % Number of distinct compass directions
     % This will be the number of outputs in the neural net
-    nDirections = 8; 
+    nDirections = 4; 
     
-    createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections);
+    % Inputs: input features to neural net
+    % Targets: desired output
+    % This is the format PyBrain likes
+    [inputVals, targets] = createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections);
+    disp(inputVals)
+    disp(targets)
     
+    fileToStore = 'trainData.txt';
+    dlmwrite(fileToStore,[inputVals targets])
+    type(fileToStore)
     %% Neural net:
     % Inputs: (x,y,z,windValue)
     % Outputs: value of going in 8 compass directions 
