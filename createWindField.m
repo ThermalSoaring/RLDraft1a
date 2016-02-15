@@ -10,7 +10,7 @@ nd2 = norm2D([1.5 0.7], 0.5, 1);
 nd3 = norm2D([-0.5 0.8], 0.2, 0.5);
 
 % Sum the thermals
-windField = @(x,y) nd1(x,y) + nd2(x,y)+ nd3(x,y) ;
+windField = @(x,y) nd1(x,y) + nd3(x,y) ;
 
 end
 

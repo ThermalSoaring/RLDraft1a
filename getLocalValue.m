@@ -1,6 +1,6 @@
 function [ Vnear ] = getLocalValue( V, meF, gridSideSize, currPos)
 %getLocalValue Returns a mesh of values for nearby points, given a
-%continuous formula for vlaue
+%continuous formula for value
 % V is value function
 % meF is desired fineness in returned mesh
 % gridSideSize is the size of the square subset of V that is discretized

@@ -1,6 +1,7 @@
 function [ inputVals, targets ] = createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections)
 % Create training data for neural net
-% Given (x,y,z,windValue) tells best direction to go
+% Given (x,y) tells best direction to go (needs debugging - use circles
+% instead of squares for nearby values)
     
     % Unpacking training grid parameters
     xBoundsTrain = trainGrid(1,:);
@@ -75,7 +76,9 @@ function [ inputVals, targets ] = createTrainData(gridParams,windField,trainGrid
         whichX = whichX  + 1;
     end    
     
+    % Convert to 0 based indexing for PyBrain
+    targets = targets - 1;
     % Print in an orientation that is easy to match with the graph
-    disp(flipud(trainData'))  
+    % disp(flipud(trainData'))  
 end
 

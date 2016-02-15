@@ -26,7 +26,7 @@ if (is3D == 0)
     % sideLength must be even (how far away airplane can see in mesh units / 2)
     % meF refers to mesh fineness for value function (size of box in grid)
     % sideLength is the number of boxes to a side in the mesh created
-    meFVFun = 0.05; sideLength = 8; % Ex
+    meFVFun = 0.02; sideLength = 16; % Ex
     gridParams = [meFVFun, sideLength];
     travelUpEnergy(nSteps, stepSize, windField,startPos, gridParams);
     
@@ -40,32 +40,35 @@ if (is3D == 0)
     % Bounds and fineness of training data grid
     xBoundsTrain = [-1.5 2];
     yBoundsTrain = [-1.5 2];
-    trainDataFineness = 0.5*[1 1];
+    trainDataFineness = 0.1*[1 1];
     trainGrid = [xBoundsTrain;yBoundsTrain;trainDataFineness];  
     
     % Distance can see in windfield when deciding optimal direction
     arrSizeTrain  = 0.2; 
     
     % Whether or not the training data is displayed
-    printToGraph = 1;
+    printToGraph = 0;
     
     % Number of distinct compass directions
     % This will be the number of outputs in the neural net
-    nDirections = 4; 
+    nDirections = 8; 
     
+    %% Creation of classification training data
     % Inputs: input features to neural net
     % Targets: desired output
     % This is the format PyBrain likes
     [inputVals, targets] = createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections);
-    disp(inputVals)
-    disp(targets)
     
+    % Write data to txt file
     fileToStore = 'trainData.txt';
-    dlmwrite(fileToStore,[inputVals targets])
-    type(fileToStore)
-    %% Neural net:
-    % Inputs: (x,y,z,windValue)
-    % Outputs: value of going in 8 compass directions 
+    dlmwrite(fileToStore,[inputVals targets]);
+    type(fileToStore);
+    
+    %% Creation of value estimation training data (regression)
+    % Find the value function for going right in each case
+    numMeFSteps = 1;
+    [inputValsValueEst, targetsValueEst] = valueEst(gridParams,windField,trainGrid,numMeFSteps);
+
     
 end
 
