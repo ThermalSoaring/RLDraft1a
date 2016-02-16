@@ -7,13 +7,14 @@ from pylab import figure, ioff, clf, contourf, ion, draw, show
 
 numInput = 2
 numTarget = 8 # Number of directions
+trainingDataFile = 'classData.txt'
 ds = ClassificationDataSet(numInput, nb_classes=numTarget) #2D input and 1D output
 
 
 # Loading code based off of this code:
 # http://stackoverflow.com/questions/8139822/how-to-load-training-data-in-pybrain
 import csv
-tf =  open('trainData.txt', 'r')
+tf =  open(trainingDataFile, 'r')
 
 for line in tf.readlines():
 	# Split the values on the current line, and convert to float

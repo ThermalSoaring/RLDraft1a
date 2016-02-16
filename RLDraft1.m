@@ -38,38 +38,47 @@ if (is3D == 0)
     % trainData
     
     % Bounds and fineness of training data grid
-    xBoundsTrain = [-1.5 2];
-    yBoundsTrain = [-1.5 2];
-    trainDataFineness = 0.1*[1 1];
+    % Currently used for both classification and regression code
+    xBoundsTrain = [-2 2.5];
+    yBoundsTrain = [-2 2.5];
+    trainDataFineness = 0.3*[1 1];
     trainGrid = [xBoundsTrain;yBoundsTrain;trainDataFineness];  
-    
-    % Distance can see in windfield when deciding optimal direction
+        
+    %% Creation of classification training data
+   % Distance can see in windfield when deciding optimal direction 
+    % Used for creation of classification data
     arrSizeTrain  = 0.2; 
     
-    % Whether or not the training data is displayed
+    % Whether or not the training data (arrows) is displayed
+    % This is the classification training data
     printToGraph = 0;
     
     % Number of distinct compass directions
-    % This will be the number of outputs in the neural net
+    % This will be the number of outputs in the neural net 
     nDirections = 8; 
     
-    %% Creation of classification training data
-    % Inputs: input features to neural net
-    % Targets: desired output
+    % Inputs: input features to neural net (x,y)
+    % Targets: desired output (direction to go)
     % This is the format PyBrain likes
     [inputVals, targets] = createTrainData(gridParams,windField,trainGrid,arrSizeTrain,printToGraph,nDirections);
     
     % Write data to txt file
-    fileToStore = 'trainData.txt';
-    dlmwrite(fileToStore,[inputVals targets]);
-    type(fileToStore);
+    fileToStore = 'classData.txt';
+    dlmwrite(fileToStore,[inputVals targets]);     
     
     %% Creation of value estimation training data (regression)
     % Find the value function for going right in each case
-    numMeFSteps = 1;
-    [inputValsValueEst, targetsValueEst] = valueEst(gridParams,windField,trainGrid,numMeFSteps);
-
-    
+    stepRightSize = 0.1;
+    plotValue = 1; % Plot the resulting value surface 
+    % Inputs: input features to neural net (x,y)
+    % Targets: desired output (height of value surface)
+    [inputValsValueEst, targetsValueEst] = valueEst(windField,trainGrid,stepRightSize,plotValue);
+   
+    % Write data to txt file
+    fileForRegression = 'regrData.txt';
+    vertScale = 100;
+    dlmwrite(fileForRegression,[inputValsValueEst,vertScale*targetsValueEst]);
+    type(fileForRegression);
 end
 
 

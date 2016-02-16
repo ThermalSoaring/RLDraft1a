@@ -16,7 +16,7 @@ function [ inputVals, targets ] = createTrainData(gridParams,windField,trainGrid
     xValsTrain = xBoundsTrain(1):trainDataFineness:xBoundsTrain(2);
     yValsTrain = yBoundsTrain(1):trainDataFineness:yBoundsTrain(2);
     
-    % Create a matrix of the input vales
+    % Create a matrix of the input values
     % Each row contains an (x,y) pair  
     inputVals=zeros(length(xValsTrain)*length(yValsTrain),2);
     
@@ -75,7 +75,7 @@ function [ inputVals, targets ] = createTrainData(gridParams,windField,trainGrid
         end
         whichX = whichX  + 1;
     end    
-    
+   
     % Convert to 0 based indexing for PyBrain
     targets = targets - 1;
     % Print in an orientation that is easy to match with the graph
